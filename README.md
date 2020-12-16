@@ -5,7 +5,7 @@
 
 A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 
-![Screenshot](https://i.imgur.com/aQnAIVD.png)
+![Example](https://i.imgur.com/bKKU4Sr.gif)
 
 ## Requirements
 
