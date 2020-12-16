@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "cross-env NODE_ENV=development run-s mix",
+    "build:production": "cross-env NODE_ENV=production run-s clean mix",
+    "start": "cross-env NODE_ENV=development run-s \"mix --watch\"",
+    "clean": "rimraf public",
+    "mix": "webpack --progress --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.1.0",
+    "cross-env": "^7.0.3",
+    "laravel-mix": "^5.0.9",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.2.1",
+    "rimraf": "^3.0.2",
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0",
+    "tailwindcss": "^2.0.2",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "dependencies": {
+    "tinycolor2": "^1.4.2"
+  }
+}

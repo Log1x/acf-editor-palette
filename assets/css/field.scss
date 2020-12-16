@@ -1,0 +1,21 @@
+.acf-field-editor-palette {
+  .acf-label label {
+    @apply cursor-default flex items-center;
+  }
+
+  .acf-input {
+    max-width: 300px;
+
+    ul {
+      @apply list-none grid grid-cols-6 gap-y-3;
+
+      li {
+        @apply m-0 p-0 min-w-0 relative;
+
+        input {
+          @apply hidden;
+        }
+      }
+    }
+  }
+}
