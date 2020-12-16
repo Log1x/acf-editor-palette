@@ -209,19 +209,6 @@ class Field extends \acf_field
     }
 
     /**
-     * The field value after loading from the database.
-     *
-     * @param  mixed $value
-     * @param  int   $post_id
-     * @param  array $field
-     * @return mixed
-     */
-    public function load_value($value, $post_id, $field)
-    {
-        return $value;
-    }
-
-    /**
      * The field value before saving to the database.
      *
      * @param  mixed $value
