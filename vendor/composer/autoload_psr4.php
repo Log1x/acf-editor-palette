@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Log1x\\AcfEditorPalette\\' => array($baseDir . '/src'),
-    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );
