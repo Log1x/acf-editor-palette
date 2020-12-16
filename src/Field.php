@@ -52,7 +52,10 @@ class Field extends \acf_field
 
         foreach ($palette as $value) {
             $colors = array_merge($colors, [
-                $value['slug'] => $value
+                $value['slug'] => array_merge($value, [
+                    'text' => sprintf('has-text-color has-%s-color', $value['slug']),
+                    'background' => sprintf('has-background has-%s-background-color', $value['slug']),
+                ]);
             ]);
         }
 
@@ -160,6 +163,8 @@ class Field extends \acf_field
                 'name' => 'Name',
                 'slug' => 'Slug',
                 'color' => 'Color',
+                'text' => 'Text class',
+                'background' => 'Background class',
                 'array' => 'Array',
             ],
         ]);

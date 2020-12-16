@@ -31,14 +31,16 @@ Download the release `.zip` and install into `wp-content/plugins`.
 Pretty straight forward.
 
 - Colors are automatically loaded from the editor palette.
-- Return format is keyed the same as when [registered](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) in the palette.
+- Return format includes the default [palette keys](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) as well as background and text color classes for convenience.
 - Default value can optionally be set using the color's slug.
 
 ```php
-^ array:3 [▼
+^ array:5 [▼
   "name" => "Green (500)"
   "slug" => "green-500"
   "color" => "#0e9f6e"
+  "text" => "has-text-color has-green-500-color"
+  "background" => "has-background has-green-500-background-color"
 ]
 ```
 
