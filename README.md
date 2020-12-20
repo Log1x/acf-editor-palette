@@ -51,8 +51,8 @@ If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-c
 ```php
 $field
   ->addField('my_color_field', 'editor_palette')
-    ->setConfig('default_value' => 'green-500')
-    ->setConfig('return_value' => 'slug');
+    ->setConfig('default_value', 'green-500')
+    ->setConfig('return_format', 'slug');
 ```
 
 ## Todo
