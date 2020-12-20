@@ -55,7 +55,7 @@ class Field extends \acf_field
                 $value['slug'] => array_merge($value, [
                     'text' => sprintf('has-text-color has-%s-color', $value['slug']),
                     'background' => sprintf('has-background has-%s-background-color', $value['slug']),
-                ]);
+                ])
             ]);
         }
 
