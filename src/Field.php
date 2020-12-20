@@ -231,7 +231,7 @@ class Field extends \acf_field
         if (! wp_script_is('wp-components')) {
             wp_enqueue_style('wp-components');
         }
-        
+
         wp_enqueue_style($this->name, $this->asset('css/field.css'), [], null);
         wp_enqueue_script($this->name, $this->asset('js/field.js'), [], null, true);
     }
