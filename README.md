@@ -1,6 +1,7 @@
 # ACF Editor Palette
 
 ![Latest Stable Version](https://img.shields.io/packagist/v/log1x/acf-editor-palette?style=flat-square)
+![Build Status](https://img.shields.io/circleci/build/github/Log1x/acf-editor-palette?style=flat-square)
 ![Total Downloads](https://img.shields.io/packagist/dt/log1x/acf-editor-palette?style=flat-square)
 
 A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
