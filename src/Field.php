@@ -228,7 +228,7 @@ class Field extends \acf_field
      */
     public function input_admin_enqueue_scripts()
     {
-        if (! wp_script_is('wp-components', 'enqueued')) {
+        if (! wp_script_is('wp-components')) {
             wp_enqueue_style('wp-components');
         }
         
