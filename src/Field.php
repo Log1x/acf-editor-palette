@@ -228,8 +228,8 @@ class Field extends \acf_field
      */
     public function input_admin_enqueue_scripts()
     {
-        if ( ! wp_script_is('wp-components', 'enqueued') ) {
-            wp_enqueue_style( 'wp-components' );
+        if (! wp_script_is('wp-components', 'enqueued')) {
+            wp_enqueue_style('wp-components');
         }
         
         wp_enqueue_style($this->name, $this->asset('css/field.css'), [], null);
