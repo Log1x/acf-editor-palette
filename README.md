@@ -53,14 +53,9 @@ If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-c
 $field
   ->addField('my_color_field', 'editor_palette')
     ->setConfig('default_value', 'green-500')
+    ->setConfig('exclude_colors', ['green-50', 'green-100'])
     ->setConfig('return_format', 'slug');
 ```
-
-## Todo
-
-- [ ] Style ACF tooltip to be more uniform with Gutenberg
-- [ ] Fix focus style
-- [ ] Add gradient support
 
 ## Bug Reports
 
