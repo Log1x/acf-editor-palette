@@ -126,7 +126,7 @@ class Field extends \acf_field
 
         echo '<div class="components-circular-option-picker__custom-clear-wrapper">' .
             '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">' . // phpcs:ignore
-                __('Clear') .
+                __('Clear', 'acf-editor-palette') .
             '</button>' .
         '</div>';
 
@@ -162,13 +162,13 @@ class Field extends \acf_field
         acf_render_field_setting($field, [
             'label' => __('Exclude Colors', 'acf-editor-palette'),
             'name' => 'exclude_colors',
-            'instructions' => __('Exclude color(s) from palette.', 'acf-editor-palette'),
+            'instructions' => __('Exclude colors from palette.', 'acf-editor-palette'),
             'type' => 'select',
             'ui' => '1',
             'default_value' => null,
             'allow_null' => true,
             'multiple' => true,
-            'placeholder' => __('Select color(s) to exclude (optional)', 'acf-editor-palette'),
+            'placeholder' => __('Select colors (optional)', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 
