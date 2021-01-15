@@ -69,31 +69,29 @@ class Field extends \acf_field
      */
     public function render_field($field)
     {
-        if (empty($this->palette())) {
+        if (empty($palette = $this->palette())) {
             return;
         }
 
-        $field_color_slug = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
+        $palette = array_filter($palette, function ($color) use ($field) {
+            return ! in_array($color['slug'], $field['exclude_colors'] ?: []);
+        });
+
+        $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
 
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
         echo '<ul class="components-circular-option-picker__swatches">';
 
-        foreach ($this->palette() as $color) {
+        foreach ($palette as $color) {
             echo '<li class="components-circular-option-picker__option-wrapper">';
 
             echo sprintf(
-                '<input
-                    type="radio"
-                    id="%s-%s"
-                    name="%s"
-                    value="%s"
-                    %s
-                >',
+                '<input type="radio" id="%s-%s" name="%s" value="%s" %s>',
                 $field['id'],
                 $color['slug'],
                 $field['name'],
                 $color['slug'],
-                checked($color['slug'], $field_color_slug, false)
+                checked($color['slug'], $active, false)
             );
 
             echo sprintf(
@@ -151,6 +149,19 @@ class Field extends \acf_field
             'default_value' => null,
             'allow_null' => true,
             'placeholder' => __('Select a color (optional)', 'acf-editor-palette'),
+            'choices' => $colors,
+        ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Exclude Colors', 'acf-editor-palette'),
+            'name' => 'exclude_colors',
+            'instructions' => __('Exclude color(s) from palette.', 'acf-editor-palette'),
+            'type' => 'select',
+            'ui' => '1',
+            'default_value' => null,
+            'allow_null' => true,
+            'multiple' => true,
+            'placeholder' => __('Select color(s) to exclude (optional)', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 
@@ -219,7 +230,7 @@ class Field extends \acf_field
      */
     public function update_value($value, $post_id, $field)
     {
-        return ! empty($value) ? $this->palette($value) : $value;
+        return ! empty($value) ? $this->palette($value) : false;
     }
 
     /**
