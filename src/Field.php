@@ -74,6 +74,8 @@ class Field extends \acf_field
             return;
         }
 
+        $field_color_slug = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
+
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
         echo '<ul class="components-circular-option-picker__swatches">';
 
@@ -92,7 +94,7 @@ class Field extends \acf_field
                 $color['slug'],
                 $field['name'],
                 $color['slug'],
-                checked($color['slug'], $field['value'], false)
+                checked($color['slug'], $field_color_slug, false)
             );
 
             echo sprintf(
