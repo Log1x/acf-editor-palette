@@ -237,7 +237,7 @@ class Field extends \acf_field
      */
     public function update_value($value, $post_id, $field)
     {
-        return ! empty($value) ? $this->palette($value) : false;
+        return ! empty($value) ? $this->palette($value) : $value;
     }
 
     /**
