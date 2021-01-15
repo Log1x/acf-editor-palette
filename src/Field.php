@@ -79,7 +79,14 @@ class Field extends \acf_field
 
         $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
 
+        echo sprintf(
+            '<input type="hidden" id="%s" name="%s" value="">',
+            $field['id'],
+            $field['name']
+        );
+
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
+
         echo '<ul class="components-circular-option-picker__swatches">';
 
         foreach ($palette as $color) {
