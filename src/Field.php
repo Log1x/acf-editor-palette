@@ -42,9 +42,8 @@ class Field extends \acf_field
     protected function palette($color = null)
     {
         $colors = [];
-        $palette = array_pop(
-            get_theme_support('editor-color-palette')
-        );
+        $editor_color_palette = get_theme_support('editor-color-palette');
+        $palette = array_pop($editor_color_palette);
 
         if (empty($palette)) {
             return $color ?: $colors;
