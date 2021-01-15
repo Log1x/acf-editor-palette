@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Log1x\\AcfEditorPalette\\Concerns\\Asset' => $baseDir . '/src/Concerns/Asset.php',
     'Log1x\\AcfEditorPalette\\Field' => $baseDir . '/src/Field.php',
 );
