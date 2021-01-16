@@ -6,7 +6,7 @@
 
 A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 
-![Example](https://i.imgur.com/bKKU4Sr.gif)
+![Field Example](https://i.imgur.com/bKKU4Sr.gif)
 
 ## Requirements
 
@@ -29,7 +29,7 @@ Download the release `.zip` and install into `wp-content/plugins`.
 
 ## Usage
 
-Pretty straight forward.
+![Field Group Example](https://i.imgur.com/awXqkFA.png)
 
 - Colors are automatically loaded from the editor palette.
 - Return format includes the default [palette keys](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) as well as background and text color classes for convenience.
