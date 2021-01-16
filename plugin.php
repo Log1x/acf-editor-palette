@@ -4,7 +4,7 @@
  * Plugin Name: Advanced Custom Fields: Editor Palette Field
  * Plugin URI:  https://github.com/log1x/acf-editor-palette
  * Description: A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      Brandon Nifong
  * Author URI:  https://github.com/log1x
  */
@@ -62,9 +62,9 @@ add_filter('after_setup_theme', new class
         $this->uri = plugin_dir_url(__FILE__) . $this->path;
         $this->path = plugin_dir_path(__FILE__) . $this->path;
 
-        require_once file_exists($composer = __DIR__ . '/vendor/autoload.php') ?
-            $composer :
-            __DIR__ . '/dist/autoload.php';
+        if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
+            require_once $composer;
+        }
 
         $this->register();
         $this->registerAdminColumns();
