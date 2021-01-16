@@ -1,8 +1,8 @@
 # ACF Editor Palette
 
 ![Latest Stable Version](https://img.shields.io/packagist/v/log1x/acf-editor-palette?style=flat-square)
-![Build Status](https://img.shields.io/circleci/build/github/Log1x/acf-editor-palette?style=flat-square)
 ![Total Downloads](https://img.shields.io/packagist/dt/log1x/acf-editor-palette?style=flat-square)
+![Build Status](https://img.shields.io/github/workflow/status/log1x/acf-editor-palette/Compatibility%20Checks)
 
 A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 
@@ -34,6 +34,7 @@ Pretty straight forward.
 - Colors are automatically loaded from the editor palette.
 - Return format includes the default [palette keys](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) as well as background and text color classes for convenience.
 - Default value can optionally be set using the color's slug.
+- Colors can optionally be excluded from the palette.
 
 ```php
 ^ array:5 [▼
@@ -67,4 +68,4 @@ Contributing whether it be through PRs, reporting an issue, or suggesting an ide
 
 ## License
 
-ACF Editor Palette is provided under the [MIT License](https://github.com/log1x/acf-editor-palette/blob/master/LICENSE.md).
+ACF Editor Palette is provided under the [MIT License](LICENSE.md).
