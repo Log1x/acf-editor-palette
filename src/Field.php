@@ -87,6 +87,14 @@ class Field extends \acf_field
 
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
 
+        if ($field['gradient_support']) {
+            echo '<div role="group" class="components-button-group block-editor-color-gradient-control__button-tabs">
+                <button type="button" class="components-button is-small is-pressed">Solid</button>
+                <button type="button" class="components-button is-small">Gradient</button>
+            </div>';
+        }
+
+        echo '<div role="group" class="components-button-group block-editor-color-gradient-control__button-tabs"><button type="button" aria-pressed="false" class="components-button is-small">Solid</button><button type="button" aria-pressed="true" class="components-button is-small is-pressed">Gradient</button></div>';
         echo '<ul class="components-circular-option-picker__swatches">';
 
         foreach ($palette as $color) {
