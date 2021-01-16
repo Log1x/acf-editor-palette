@@ -42,8 +42,7 @@ class Field extends \acf_field
     protected function palette($color = null)
     {
         $colors = [];
-        $palette = (array) get_theme_support('editor-color-palette');
-        $palette = array_pop($palette);
+        $palette = current((array) get_theme_support('editor-color-palette'));
 
         if (empty($palette)) {
             return $color ?: $colors;
@@ -59,6 +58,18 @@ class Field extends \acf_field
         }
 
         return ! empty($color) ? $colors[$color] : $colors;
+    }
+
+    /**
+     * Retrieves the editor gradient presets.
+     *
+     * @return array
+     */
+    protected function gradients()
+    {
+        return current(
+            (array) get_theme_support('editor-gradient-presets')
+        );
     }
 
     /**
@@ -92,9 +103,45 @@ class Field extends \acf_field
                 <button type="button" class="components-button is-small is-pressed">Solid</button>
                 <button type="button" class="components-button is-small">Gradient</button>
             </div>';
+
+            echo '<ul class="components-circular-option-picker__swatches">';
+
+            foreach ($this->gradients() as $color) {
+                echo '<li class="components-circular-option-picker__option-wrapper">';
+
+                echo sprintf(
+                    '<input type="radio" id="%s-%s" name="%s" value="%s" %s>',
+                    $field['id'],
+                    $color['slug'],
+                    $field['name'],
+                    $color['slug'],
+                    checked($color['slug'], $active, false)
+                );
+
+                echo sprintf(
+                    '<label
+                        for="%s-%s"
+                        aria-label="Gradient: %s"
+                        title="%s"
+                        class="components-button components-circular-option-picker__option acf-js-tooltip"
+                        style="background: %s; color: rgba(0, 0, 0, 0);"
+                        data-color="%s",
+                    ></label>',
+                    $field['id'],
+                    $color['slug'],
+                    $color['name'],
+                    $color['name'],
+                    $color['gradient'],
+                    $color['gradient'],
+                    $color['gradient']
+                );
+
+                echo '</li>';
+            }
+
+            echo '</ul>';
         }
 
-        echo '<div role="group" class="components-button-group block-editor-color-gradient-control__button-tabs"><button type="button" aria-pressed="false" class="components-button is-small">Solid</button><button type="button" aria-pressed="true" class="components-button is-small is-pressed">Gradient</button></div>';
         echo '<ul class="components-circular-option-picker__swatches">';
 
         foreach ($palette as $color) {
