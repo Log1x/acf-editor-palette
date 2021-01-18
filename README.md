@@ -32,7 +32,7 @@ $ composer require log1x/acf-editor-palette
 
 ### Manual
 
-Download the [latest release](/releases/latest) `.zip` and install into `wp-content/plugins`.
+Download the [latest release](https://github.com/Log1x/acf-editor-palette/releases/latest) `.zip` and install into `wp-content/plugins`.
 
 ## Usage
 
