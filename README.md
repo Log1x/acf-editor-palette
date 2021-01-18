@@ -18,7 +18,7 @@ A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 ## Requirements
 
 - [PHP](https://secure.php.net/manual/en/install.php) >= 7.2
-- [Composer](https://getcomposer.org/download/)
+- [ACF PRO](https://www.advancedcustomfields.com/pro/) >= 5.0
 
 ## Installation
 
@@ -32,7 +32,7 @@ $ composer require log1x/acf-editor-palette
 
 ### Manual
 
-Download the release `.zip` and install into `wp-content/plugins`.
+Download the [latest release](/releases/latest) `.zip` and install into `wp-content/plugins`.
 
 ## Usage
 
