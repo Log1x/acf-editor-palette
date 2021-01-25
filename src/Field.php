@@ -74,7 +74,7 @@ class Field extends \acf_field
         }
 
         $palette = array_filter($palette, function ($color) use ($field) {
-            return ! in_array($color['slug'], $field['exclude_colors'] ?: []);
+            return ! in_array($color['slug'], $field['exclude_colors'] ?? []);
         });
 
         $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
