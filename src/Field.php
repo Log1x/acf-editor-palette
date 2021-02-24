@@ -12,8 +12,9 @@ class Field extends \acf_field
      * @var array
      */
     public $defaults = [
-        'return_format' => 'slug',
         'default_value' => null,
+        'exclude_colors' => [],
+        'return_format' => 'slug',
     ];
 
     /**
@@ -42,8 +43,9 @@ class Field extends \acf_field
     protected function palette($color = null)
     {
         $colors = [];
-        $palette = (array) get_theme_support('editor-color-palette');
-        $palette = array_pop($palette);
+        $palette = (array) current(
+            get_theme_support('editor-color-palette')
+        );
 
         if (empty($palette)) {
             return $color ?: $colors;
@@ -74,7 +76,10 @@ class Field extends \acf_field
         }
 
         $palette = array_filter($palette, function ($color) use ($field) {
-            return ! in_array($color['slug'], $field['exclude_colors'] ?? []);
+            return ! in_array(
+                $color['slug'],
+                ! empty($field['exclude_colors']) && is_array($field['exclude_colors']) ? $field['exclude_colors'] : []
+            );
         });
 
         $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
