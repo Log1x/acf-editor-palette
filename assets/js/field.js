@@ -57,6 +57,10 @@
         $(this)
           .find('.component-color-indicator')
           .hide()
+
+        $(this)
+          .find('.empty-value')
+          .click();
       }
 
       $(this)
