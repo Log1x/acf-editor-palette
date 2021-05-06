@@ -47,8 +47,9 @@
       }
 
       const onClear = () => {
-        $('.acf-input li input').attr('checked', false)
-        $('.acf-input li input + label')
+        $ref = $(this);
+        $ref.find('.acf-input li input').attr('checked', false)
+        $ref.find('.acf-input li input + label')
           .removeClass('is-pressed')
           .parent()
           .find('svg')
@@ -57,6 +58,10 @@
         $(this)
           .find('.component-color-indicator')
           .hide()
+
+        $(this)
+          .find('.empty-value')
+          .click();
       }
 
       $(this)

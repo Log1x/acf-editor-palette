@@ -94,6 +94,15 @@ class Field extends \acf_field
 
         echo '<ul class="components-circular-option-picker__swatches">';
 
+        echo sprintf(
+            '<input class="empty-value" type="radio" id="%s-%s" name="%s" value="%s" %s>',
+            $field['id'],
+            'empty',
+            $field['name'],
+            null,
+            checked(null, $active, false)
+        );
+
         foreach ($palette as $color) {
             echo '<li class="components-circular-option-picker__option-wrapper">';
 
