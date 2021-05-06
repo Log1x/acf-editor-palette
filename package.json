@@ -6,12 +6,12 @@
     "start": "npx mix watch"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.1",
-    "laravel-mix": "^6.0.10",
-    "postcss": "^8.2.4",
-    "sass": "^1.32.4",
-    "sass-loader": "^10.1.1",
-    "tailwindcss": "^2.0.2"
+    "autoprefixer": "^10.2.5",
+    "laravel-mix": "^6.0.18",
+    "postcss": "^8.2.14",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "tailwindcss": "^2.1.2"
   },
   "dependencies": {
     "tinycolor2": "^1.4.2"
