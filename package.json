@@ -1,4 +1,5 @@
 {
+  "name": "acf-editor-palette",
   "private": true,
   "scripts": {
     "build": "npx mix",
