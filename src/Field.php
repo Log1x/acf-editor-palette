@@ -31,7 +31,6 @@ class Field extends \acf_field
         $this->uri = $plugin->uri;
         $this->path = $plugin->path;
 
-        dd($this->palette());
         parent::__construct();
     }
 
