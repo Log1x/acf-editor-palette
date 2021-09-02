@@ -31,6 +31,7 @@ class Field extends \acf_field
         $this->uri = $plugin->uri;
         $this->path = $plugin->path;
 
+        dd($this->palette());
         parent::__construct();
     }
 
@@ -43,9 +44,17 @@ class Field extends \acf_field
     protected function palette($color = null)
     {
         $colors = [];
-        $palette = (array) current(
+
+        $palette = ! empty(get_theme_support('editor-color-palette')) ? (array) current(
             get_theme_support('editor-color-palette')
-        );
+        ) : [];
+
+        $theme = class_exists('\WP_Theme_JSON') ?
+            \WP_Theme_JSON_Resolver::get_merged_data()->get_settings() : [];
+
+        if (! empty($theme = $theme['color']['palette']['theme'])) {
+            $palette = array_merge($palette, $theme);
+        }
 
         if (empty($palette)) {
             return $color ?: $colors;
