@@ -265,9 +265,9 @@ class Field extends \acf_field
         if (empty($value)) {
             return $value;
         }
-        
+
         $value = is_string($value) ? $value : $value['slug'];
-        
+
         return $this->palette($value);
     }
 
