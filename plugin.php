@@ -98,7 +98,7 @@ add_filter('after_setup_theme', new class
         add_filter('ac/column/value', function ($value, $id, $column) {
             if (
                 ! is_a($column, '\ACA\ACF\Column') ||
-                $column->get_acf_field_option('type') !== $this->name ||
+                $column->get_field_type() !== $this->name ||
                 empty($color = get_field($column->get_meta_key())) ||
                 ! is_array($color)
             ) {
