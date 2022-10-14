@@ -1,13 +1,17 @@
 .acf-field-editor-palette {
   .acf-label label {
     @apply cursor-default flex items-center;
+
+    .component-color-indicator {
+      @apply ml-2;
+    }
   }
 
   .acf-input {
-    max-width: 300px;
+    @apply max-w-xs;
 
     ul {
-      @apply list-none grid grid-cols-6 gap-y-3;
+      @apply list-none grid grid-cols-6 gap-y-3 m-0 p-0;
 
       li {
         @apply m-0 p-0 min-w-0 relative;
@@ -15,11 +19,15 @@
         input {
           @apply hidden;
         }
+
+        .components-circular-option-picker__option {
+          @apply p-0;
+        }
       }
     }
   }
 
   .empty-value {
-    display: none;
+    @apply hidden;
   }
 }
