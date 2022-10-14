@@ -13,7 +13,9 @@ namespace Log1x\AcfEditorPalette;
 
 add_filter('after_setup_theme', new class
 {
-   /**
+    use Concerns\Palette;
+
+    /**
      * The field label.
      *
      * @var string
@@ -98,11 +100,14 @@ add_filter('after_setup_theme', new class
         add_filter('ac/column/value', function ($value, $id, $column) {
             if (
                 ! is_a($column, '\ACA\ACF\Column') ||
-                $column->get_field_type() !== $this->name ||
-                empty($color = get_field($column->get_meta_key())) ||
-                ! is_array($color)
+                $column->get_acf_field_option('type') !== $this->name ||
+                empty($color = get_field($column->get_meta_key()))
             ) {
                 return $value;
+            }
+
+            if (! is_array($color)) {
+                $color = $this->palette($color);
             }
 
             return sprintf(
