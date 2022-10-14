@@ -272,7 +272,13 @@ class Field extends \acf_field
      */
     public function update_value($value, $post_id, $field)
     {
-        return ! empty($value) ? $this->palette($value) : $value;
+        if (empty($value)) {
+            return $value;
+        }
+
+        $value = is_string($value) ? $value : $value['slug'];
+
+        return $this->palette($value);
     }
 
     /**
