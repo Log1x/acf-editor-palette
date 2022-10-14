@@ -43,9 +43,19 @@ class Field extends \acf_field
     protected function palette($color = null)
     {
         $colors = [];
+        $themeJson = [];
+
         $palette = (array) current(
             get_theme_support('editor-color-palette')
         );
+
+        if (function_exists('wp_get_global_settings')) {
+            $themeJson = wp_get_global_settings(['color', 'palette', 'theme']);
+        }
+
+        if (! isset($themeJson['border'])) {
+            $palette = array_merge($palette, $themeJson);
+        }
 
         if (empty($palette)) {
             return $color ?: $colors;
