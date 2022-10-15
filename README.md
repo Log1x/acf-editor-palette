@@ -10,7 +10,7 @@ A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 
 ## Features
 
-- Colors are automatically loaded from the editor palette.
+- Colors are automatically loaded from `theme.json` and/or the editor palette.
 - Return format includes the default [palette keys](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) as well as background and text color classes for convenience.
 - Default value can optionally be set using the color's slug.
 - Colors can optionally be excluded from the palette.
