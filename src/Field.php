@@ -70,7 +70,9 @@ class Field extends \acf_field
             ]);
         }
 
-        return ! empty($color) ? $colors[$color] : $colors;
+        return ! empty($color) ? (
+            $colors[$color] ?? null
+        ) : $colors;
     }
 
     /**
