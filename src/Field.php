@@ -236,7 +236,7 @@ class Field extends \acf_field
     {
         $format = $field['return_format'] ?? $this->defaults['return_format'];
 
-        if (is_string($value)) {
+        if (! empty($value) && is_string($value)) {
             $value = $this->palette($value);
         }
 
