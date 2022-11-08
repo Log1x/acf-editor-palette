@@ -62,6 +62,11 @@ class Field extends \acf_field
             });
         }
 
+        if (empty($palette)) {
+            echo __('There are no colors available.', 'acf-editor-palette');
+            return;
+        }
+
         $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
 
         echo sprintf(
