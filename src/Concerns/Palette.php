@@ -16,7 +16,7 @@ trait Palette
         $themeJson = [];
 
         $palette = (array) current(
-            get_theme_support('editor-color-palette') ?? []
+            get_theme_support('editor-color-palette') ?: []
         );
 
         if (function_exists('wp_get_global_settings')) {
@@ -32,6 +32,10 @@ trait Palette
         }
 
         foreach ($palette as $value) {
+            if (empty($value['slug'])) {
+                return;
+            }
+
             $colors = array_merge($colors, [
                 $value['slug'] => array_merge($value, [
                     'text' => sprintf('has-text-color has-%s-color', $value['slug']),

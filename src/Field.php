@@ -14,6 +14,7 @@ class Field extends \acf_field
      */
     public $defaults = [
         'default_value' => null,
+        'allowed_colors' => [],
         'exclude_colors' => [],
         'return_format' => 'slug',
     ];
@@ -44,15 +45,22 @@ class Field extends \acf_field
     public function render_field($field)
     {
         if (empty($palette = $this->palette())) {
+            echo __('The theme editor palette is empty.', 'acf-editor-palette');
             return;
         }
 
-        $palette = array_filter($palette, function ($color) use ($field) {
-            return ! in_array(
-                $color['slug'],
-                ! empty($field['exclude_colors']) && is_array($field['exclude_colors']) ? $field['exclude_colors'] : []
-            );
-        });
+        if (! empty($excluded = $field['exclude_colors']) && is_array($excluded)) {
+            $palette = array_filter($palette, function ($color) use ($excluded) {
+                return ! in_array($color['slug'], $excluded);
+            });
+        }
+
+
+        if (! empty($allowed = $field['allowed_colors']) && is_array($allowed)) {
+            $palette = array_filter($palette, function ($color) use ($allowed) {
+                return in_array($color['slug'], $allowed);
+            });
+        }
 
         $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
 
@@ -129,7 +137,17 @@ class Field extends \acf_field
     {
         $colors = [];
 
-        foreach ($this->palette() as $item) {
+        if (empty($palette = $this->palette())) {
+            return acf_render_field_setting($field, [
+                'label' => __('No color palette found.', 'acf-editor-palette'),
+                'name' => 'color_palette_empty',
+                'instructions' => __('You must have a color palette to use this field.', 'acf-editor-palette'),
+                'type' => 'message',
+                'message' => __('The theme editor palette is empty. Add a color palette using <a target="_blank" rel="noopener noreferrer" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/">theme.json</a> or <a target="_blank" rel="noopener noreferrer" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/#block-color-palettes">add_theme_support()</a>.', 'acf-editor-palette'), // phpcs:ignore
+            ]);
+        }
+
+        foreach ($palette as $item) {
             $colors[$item['slug']] = sprintf(
                 '<span style="display: inline-block;
                     background-color: %s;
@@ -152,20 +170,33 @@ class Field extends \acf_field
             'ui' => '1',
             'default_value' => null,
             'allow_null' => true,
-            'placeholder' => __('Select a color (optional)', 'acf-editor-palette'),
+            'placeholder' => __('Select a default color (optional)', 'acf-editor-palette'),
+            'choices' => $colors,
+        ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Allowed Colors', 'acf-editor-palette'),
+            'name' => 'allowed_colors',
+            'instructions' => __('Allow colors from the palette.', 'acf-editor-palette'),
+            'type' => 'select',
+            'ui' => '1',
+            'default_value' => null,
+            'allow_null' => true,
+            'multiple' => true,
+            'placeholder' => __('Select allowed colors (optional)', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 
         acf_render_field_setting($field, [
             'label' => __('Exclude Colors', 'acf-editor-palette'),
             'name' => 'exclude_colors',
-            'instructions' => __('Exclude colors from palette.', 'acf-editor-palette'),
+            'instructions' => __('Exclude colors from the palette.', 'acf-editor-palette'),
             'type' => 'select',
             'ui' => '1',
             'default_value' => null,
             'allow_null' => true,
             'multiple' => true,
-            'placeholder' => __('Select colors (optional)', 'acf-editor-palette'),
+            'placeholder' => __('Select excluded colors (optional)', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 

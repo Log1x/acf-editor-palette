@@ -13,7 +13,7 @@ A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 - Colors are automatically loaded from `theme.json` and/or the editor palette.
 - Return format includes the default [palette keys](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) as well as background and text color classes for convenience.
 - Default value can optionally be set using the color's slug.
-- Colors can optionally be excluded from the palette.
+- Colors can optionally be allowed/excluded from the palette.
 
 ## Requirements
 
@@ -56,6 +56,7 @@ If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-c
 $field
   ->addField('my_color_field', 'editor_palette')
     ->setConfig('default_value', 'green-500')
+    ->setConfig('allowed_colors', ['green-500', 'blue-500'])
     ->setConfig('exclude_colors', ['green-50', 'green-100'])
     ->setConfig('return_format', 'slug');
 ```
