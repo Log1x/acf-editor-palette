@@ -33,7 +33,7 @@ trait Palette
 
         foreach ($palette as $value) {
             if (empty($value['slug'])) {
-                return;
+                continue;
             }
 
             $colors = array_merge($colors, [
