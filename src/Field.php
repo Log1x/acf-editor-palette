@@ -138,7 +138,7 @@ class Field extends \acf_field
         $colors = [];
 
         if (empty($palette = $this->palette())) {
-           return acf_render_field_setting($field, [
+            return acf_render_field_setting($field, [
                 'label' => __('No color palette found.', 'acf-editor-palette'),
                 'name' => 'color_palette_empty',
                 'instructions' => __('You must have a color palette to use this field.', 'acf-editor-palette'),
