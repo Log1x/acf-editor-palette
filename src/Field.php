@@ -78,7 +78,8 @@ class Field extends \acf_field
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
 
         echo '<div class="toggle-color-palette">';
-        echo '<span class="component-color-indicator block-editor-panel-color-gradient-settings__color-indicator"></span>';
+        echo '<span class="component-color-indicator block-editor-panel-color-gradient-settings__color-indicator">';
+        echo '</span>';
         echo 'Select Color';
         echo '</div>';
 
