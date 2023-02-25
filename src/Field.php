@@ -77,7 +77,11 @@ class Field extends \acf_field
 
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
 
-        echo '<ul class="components-circular-option-picker__swatches">';
+        echo '<div class="toggle-color-palette">';
+        echo '<span class="component-color-indicator block-editor-panel-color-gradient-settings__color-indicator"></span>';
+        echo 'Select Color';
+        echo '</div>';
+
 
         echo sprintf(
             '<input class="empty-value" type="radio" id="%s-%s" name="%s" value="%s" %s>',
@@ -87,6 +91,8 @@ class Field extends \acf_field
             null,
             checked(null, $active, false)
         );
+
+        echo '<ul class="components-circular-option-picker__swatches hidden"';
 
         foreach ($palette as $color) {
             echo '<li class="components-circular-option-picker__option-wrapper">';
@@ -117,17 +123,11 @@ class Field extends \acf_field
                 $color['color'],
                 $color['color']
             );
-
+            echo '<span class="svg-wrapper hidden">';
+            echo '</span>';
             echo '</li>';
         }
-
         echo '</ul>';
-
-        echo '<div class="components-circular-option-picker__custom-clear-wrapper">' .
-            '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">' . // phpcs:ignore
-                __('Clear', 'acf-editor-palette') .
-            '</button>' .
-        '</div>';
 
         echo '</div>';
     }
