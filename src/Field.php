@@ -93,7 +93,12 @@ class Field extends \acf_field
             checked(null, $active, false)
         );
 
-        echo '<ul class="components-circular-option-picker__swatches hidden"';
+
+        echo '<div class="color-palette-wrapper hidden ">';
+                
+        echo '<h2 class="color-palette-wrapper-title">Theme</h2>';
+
+        echo '<ul class="components-circular-option-picker__swatches"';
 
         echo sprintf(
             '<input class="empty-value" type="radio" id="%s-%s" name="%s" value="%s" %s>',
@@ -134,11 +139,11 @@ class Field extends \acf_field
                 $color['color'],
                 $color['color']
             );
-            echo '<span class="svg-wrapper hidden">';
-            echo '</span>';
             echo '</li>';
         }
         echo '</ul>';
+
+        echo '</div>';
 
         echo '</div>';
     }

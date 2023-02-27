@@ -10,15 +10,18 @@
   .acf-input {
     @apply max-w-xs mt-2;
 
-    ul {
-      @apply list-none grid grid-cols-6 gap-y-3 m-0 p-0 bg-white p-1 border;
+    .color-palette-wrapper {
+      @apply bg-white pt-3 pb-4 px-4 border mt-1 rounded-sm shadow-sm;
 
-      label {
-        display: none !important;
+      .color-palette-wrapper-title {
+        @apply font-medium uppercase mb-2 py-1;
+        font-size: 11px;
       }
-      input {
-        display: none !important;
-      }
+    }
+
+    ul {
+      @apply list-none grid grid-cols-6 gap-y-3 m-0 p-0;
+
       li {
         label {
           display: inline-block !important;

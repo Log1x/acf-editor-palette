@@ -16,20 +16,20 @@
       $(this)
         .find('.toggle-color-palette')
         .click(() => {
-          $(this)
-            .find('.components-circular-option-picker__swatches')
-            .toggleClass('hidden')
+          $(this).find('.color-palette-wrapper').toggleClass('hidden')
         })
 
       $(document).click(function (event) {
         if (
+          !$(event.target).is('.color-palette-wrapper') &&
           !$(event.target).is('.components-circular-option-picker__swatches') &&
+          !$(event.target).is('.color-palette-wrapper-title') &&
           !$(event.target).parent().is('li') &&
           !$(event.target)
             .parent()
             .hasClass('components-circular-option-picker')
         ) {
-          $('.components-circular-option-picker__swatches').addClass('hidden')
+          $('.color-palette-wrapper').addClass('hidden')
         }
       })
 
