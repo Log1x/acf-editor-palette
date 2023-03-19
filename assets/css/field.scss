@@ -54,7 +54,8 @@
     display: none !important;
   }
   .toggle-color-palette {
-    @apply flex items-center border p-2 cursor-pointer px-2.5 gap-2;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    @apply flex items-center p-2 cursor-pointer px-2.5 gap-2;
 
     &:hover {
       color: var(--wp-admin-theme-color);
