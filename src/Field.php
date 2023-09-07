@@ -62,8 +62,14 @@ class Field extends \acf_field
             });
         }
 
-        if (! empty($custom_colors = $field['custom_colors']) && is_array($custom_colors)) {
-            $palette = $custom_colors;
+        if (! empty($customColors = $field['custom_colors']) && is_array($customColors)) {
+            $palette = array_map(function ($color) {
+                if (empty($color['slug'])) {
+                    $color['slug'] = sanitize_title($color['name']);
+                }
+
+                return $color;
+            }, $customColors);
         }
 
         if (empty($palette)) {
@@ -207,6 +213,36 @@ class Field extends \acf_field
             'multiple' => true,
             'placeholder' => __('Select excluded colors (optional)', 'acf-editor-palette'),
             'choices' => $colors,
+        ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Custom Colors', 'acf-editor-palette'),
+            'name' => 'custom_colors',
+            'instructions' => __('Add custom colors to the palette.', 'acf-editor-palette'),
+            'type' => 'repeater',
+            'button_label' => __('Add Color', 'acf-editor-palette'),
+            'sub_fields' => [
+                [
+                    'label' => __('Name', 'acf-editor-palette'),
+                    'name' => 'name',
+                    '_name' => 'name',
+                    'key' => 'name',
+                    'type' => 'text',
+                    'required' => true,
+                    'instructions' => 'The name of the color.',
+                    'wrapper' => ['width' => '', 'class' => '', 'id' => ''],
+                ],
+                [
+                    'label' => __('Color', 'acf-editor-palette'),
+                    'name' => 'color',
+                    '_name' => 'color',
+                    'key' => 'color',
+                    'type' => 'color_picker',
+                    'required' => true,
+                    'instructions' => 'The color value.',
+                    'wrapper' => ['width' => '', 'class' => '', 'id' => ''],
+                ],
+            ],
         ]);
 
         acf_render_field_setting($field, [
