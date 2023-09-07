@@ -16,6 +16,7 @@ class Field extends \acf_field
         'default_value' => null,
         'allowed_colors' => [],
         'exclude_colors' => [],
+        'custom_colors' => [],
         'return_format' => 'slug',
     ];
 
@@ -55,11 +56,14 @@ class Field extends \acf_field
             });
         }
 
-
         if (! empty($allowed = $field['allowed_colors']) && is_array($allowed)) {
             $palette = array_filter($palette, function ($color) use ($allowed) {
                 return in_array($color['slug'], $allowed);
             });
+        }
+
+        if (! empty($custom_colors = $field['custom_colors']) && is_array($custom_colors)) {
+            $palette = $custom_colors;
         }
 
         if (empty($palette)) {

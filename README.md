@@ -58,6 +58,11 @@ $field
     ->setConfig('default_value', 'green-500')
     ->setConfig('allowed_colors', ['green-500', 'blue-500'])
     ->setConfig('exclude_colors', ['green-50', 'green-100'])
+    ->setConfig('custom_color', [
+      'name' => 'Magenta',
+      'slug' => 'magenta',
+      'color' => '#ff00ff',
+    ]);
     ->setConfig('return_format', 'slug');
 ```
 
