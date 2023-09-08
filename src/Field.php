@@ -63,13 +63,7 @@ class Field extends \acf_field
         }
 
         if (! empty($customColors = $field['custom_colors']) && is_array($customColors)) {
-            $palette = array_map(function ($color) {
-                if (empty($color['slug'])) {
-                    $color['slug'] = sanitize_title($color['name']);
-                }
-
-                return $color;
-            }, $customColors);
+            $palette = $this->sanitize_custom_colors($customColors);
         }
 
         if (empty($palette)) {
@@ -275,7 +269,7 @@ class Field extends \acf_field
         $format = $field['return_format'] ?? $this->defaults['return_format'];
 
         if (! empty($value) && is_string($value)) {
-            $value = $this->palette($value);
+            $value = $this->palette($value, $field['custom_colors']);
         }
 
         return $format === 'array' ? $value : ($value[$format] ?? $value);
@@ -296,7 +290,7 @@ class Field extends \acf_field
         if (
             $valid &&
             ! empty($value) &&
-            empty($this->palette($value))
+            empty($this->palette($value, $field['custom_colors']))
         ) {
             return __('The current color does not exist in the editor palette.', 'acf-editor-palette');
         }
@@ -320,7 +314,7 @@ class Field extends \acf_field
 
         $value = is_string($value) ? $value : $value['slug'];
 
-        return $this->palette($value);
+        return $this->palette($value, $field['custom_colors']);
     }
 
     /**
