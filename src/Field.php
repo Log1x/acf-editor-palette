@@ -153,18 +153,7 @@ class Field extends \acf_field
         }
 
         foreach ($palette as $item) {
-            $colors[$item['slug']] = sprintf(
-                '<span style="display: inline-block;
-                    background-color: %s;
-                    width: 1em;
-                    height: 1em;
-                    margin: 0 3px -3px;
-                    border: 1px solid #ccd0d4;
-                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);"
-                ></span> %s',
-                $item['color'],
-                $item['name']
-            );
+            $colors[$item['slug']] = $item['name'];
         }
 
         acf_render_field_setting($field, [
