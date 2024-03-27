@@ -49,14 +49,14 @@ class Field extends \acf_field
             return;
         }
 
-        if (! empty($excluded = $field['exclude_colors']) && is_array($excluded)) {
+        if (!empty($excluded = $field['exclude_colors']) && is_array($excluded)) {
             $palette = array_filter($palette, function ($color) use ($excluded) {
-                return ! in_array($color['slug'], $excluded);
+                return !in_array($color['slug'], $excluded);
             });
         }
 
 
-        if (! empty($allowed = $field['allowed_colors']) && is_array($allowed)) {
+        if (!empty($allowed = $field['allowed_colors']) && is_array($allowed)) {
             $palette = array_filter($palette, function ($color) use ($allowed) {
                 return in_array($color['slug'], $allowed);
             });
@@ -77,7 +77,12 @@ class Field extends \acf_field
 
         echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
 
-        echo '<ul class="components-circular-option-picker__swatches">';
+        echo '<div class="toggle-color-palette">';
+        echo '<span class="component-color-indicator block-editor-panel-color-gradient-settings__color-indicator">';
+        echo '</span>';
+        echo 'Select Color';
+        echo '</div>';
+
 
         echo sprintf(
             '<input class="empty-value" type="radio" id="%s-%s" name="%s" value="%s" %s>',
@@ -87,6 +92,23 @@ class Field extends \acf_field
             null,
             checked(null, $active, false)
         );
+
+
+        echo '<div class="color-palette-wrapper hidden ">';
+
+        echo '<h2 class="color-palette-wrapper-title">Theme</h2>';
+
+        echo '<ul class="components-circular-option-picker__swatches"';
+
+        echo sprintf(
+            '<input class="empty-value" type="radio" id="%s-%s" name="%s" value="%s" %s>',
+            $field['id'],
+            'empty',
+            $field['name'],
+            null,
+            checked(null, $active, false)
+        );
+
 
         foreach ($palette as $color) {
             echo '<li class="components-circular-option-picker__option-wrapper">';
@@ -117,17 +139,11 @@ class Field extends \acf_field
                 $color['color'],
                 $color['color']
             );
-
             echo '</li>';
         }
-
         echo '</ul>';
 
-        echo '<div class="components-circular-option-picker__custom-clear-wrapper">' .
-            '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">' . // phpcs:ignore
-                __('Clear', 'acf-editor-palette') .
-            '</button>' .
-        '</div>';
+        echo '</div>';
 
         echo '</div>';
     }
@@ -223,7 +239,7 @@ class Field extends \acf_field
     {
         $format = $field['return_format'] ?? $this->defaults['return_format'];
 
-        if (! empty($value) && is_string($value)) {
+        if (!empty($value) && is_string($value)) {
             $value = $this->palette($value);
         }
 
@@ -244,7 +260,7 @@ class Field extends \acf_field
     {
         if (
             $valid &&
-            ! empty($value) &&
+            !empty($value) &&
             empty($this->palette($value))
         ) {
             return __('The current color does not exist in the editor palette.', 'acf-editor-palette');
