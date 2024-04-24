@@ -23,6 +23,12 @@
         .components-circular-option-picker__option {
           @apply p-0;
         }
+
+        svg {
+          position: absolute;
+          top: 2px;
+          left: 2px;
+        }
       }
     }
   }
