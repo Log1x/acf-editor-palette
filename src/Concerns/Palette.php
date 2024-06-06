@@ -44,7 +44,7 @@ trait Palette
             ]);
         }
 
-        return ! empty($color) ? (
+        return ! empty($color) && is_string($color) ? (
             $colors[$color] ?? null
         ) : $colors;
     }
