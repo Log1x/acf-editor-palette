@@ -59,10 +59,10 @@ add_filter('after_setup_theme', new class
             return;
         }
 
-        $this->uri = plugin_dir_url(__FILE__).$this->path;
-        $this->path = plugin_dir_path(__FILE__).$this->path;
+        $this->uri = plugin_dir_url(__FILE__) . $this->path;
+        $this->path = plugin_dir_path(__FILE__) . $this->path;
 
-        if (file_exists($composer = __DIR__.'/vendor/autoload.php')) {
+        if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
             require_once $composer;
         }
 

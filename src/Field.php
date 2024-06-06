@@ -121,10 +121,10 @@ class Field extends \acf_field
 
         echo '</ul>';
 
-        echo '<div class="components-circular-option-picker__custom-clear-wrapper">'.
+        echo '<div class="components-circular-option-picker__custom-clear-wrapper">' .
             '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">'. // phpcs:ignore
-                __('Clear', 'acf-editor-palette').
-            '</button>'.
+                __('Clear', 'acf-editor-palette') .
+            '</button>' .
         '</div>';
 
         echo '</div>';

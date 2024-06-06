@@ -16,7 +16,7 @@ trait Asset
     {
         $asset = $this->manifest($asset);
 
-        return $this->uri.$asset;
+        return $this->uri . $asset;
     }
 
     /**
@@ -24,7 +24,7 @@ trait Asset
      */
     public function inlineAsset(string $asset): ?string
     {
-        $path = $this->path.$this->manifest($asset);
+        $path = $this->path . $this->manifest($asset);
 
         if (! file_exists($path)) {
             return null;
@@ -44,7 +44,7 @@ trait Asset
                 : $this->manifest;
         }
 
-        if (! file_exists($manifest = $this->path.'manifest.json')) {
+        if (! file_exists($manifest = $this->path . 'manifest.json')) {
             return [];
         }
 
