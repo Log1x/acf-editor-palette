@@ -21,9 +21,6 @@ class Field extends \acf_field
 
     /**
      * Create a new Field instance.
-     *
-     * @param  callable $plugin
-     * @return void
      */
     public function __construct(callable $plugin)
     {
@@ -39,13 +36,14 @@ class Field extends \acf_field
     /**
      * The rendered field type.
      *
-     * @param  array $field
+     * @param  array  $field
      * @return void
      */
     public function render_field($field)
     {
         if (empty($palette = $this->palette())) {
             echo __('The theme editor palette is empty.', 'acf-editor-palette');
+
             return;
         }
 
@@ -55,7 +53,6 @@ class Field extends \acf_field
             });
         }
 
-
         if (! empty($allowed = $field['allowed_colors']) && is_array($allowed)) {
             $palette = array_filter($palette, function ($color) use ($allowed) {
                 return in_array($color['slug'], $allowed);
@@ -64,6 +61,7 @@ class Field extends \acf_field
 
         if (empty($palette)) {
             echo __('There are no colors available.', 'acf-editor-palette');
+
             return;
         }
 
@@ -123,10 +121,10 @@ class Field extends \acf_field
 
         echo '</ul>';
 
-        echo '<div class="components-circular-option-picker__custom-clear-wrapper">' .
-            '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">' . // phpcs:ignore
-                __('Clear', 'acf-editor-palette') .
-            '</button>' .
+        echo '<div class="components-circular-option-picker__custom-clear-wrapper">'.
+            '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">'. // phpcs:ignore
+                __('Clear', 'acf-editor-palette').
+            '</button>'.
         '</div>';
 
         echo '</div>';
@@ -135,7 +133,7 @@ class Field extends \acf_field
     /**
      * The rendered field type settings.
      *
-     * @param  array $field
+     * @param  array  $field
      * @return void
      */
     public function render_field_settings($field)
@@ -214,9 +212,9 @@ class Field extends \acf_field
     /**
      * The formatted field value.
      *
-     * @param  mixed $value
-     * @param  int   $post_id
-     * @param  array $field
+     * @param  mixed  $value
+     * @param  int  $post_id
+     * @param  array  $field
      * @return mixed
      */
     public function format_value($value, $post_id, $field)
@@ -235,9 +233,9 @@ class Field extends \acf_field
      * it is valid and can be saved.
      *
      * @param  bool  $valid
-     * @param  mixed $value
-     * @param  array $field
-     * @param  array $input
+     * @param  mixed  $value
+     * @param  array  $field
+     * @param  array  $input
      * @return bool
      */
     public function validate_value($valid, $value, $field, $input)
@@ -256,9 +254,9 @@ class Field extends \acf_field
     /**
      * The field value before saving to the database.
      *
-     * @param  mixed $value
-     * @param  int   $post_id
-     * @param  array $field
+     * @param  mixed  $value
+     * @param  int  $post_id
+     * @param  array  $field
      * @return mixed
      */
     public function update_value($value, $post_id, $field)
