@@ -279,8 +279,9 @@ class Field extends \acf_field
      */
     public function input_admin_enqueue_scripts()
     {
-        wp_enqueue_style($this->name, $this->asset('css/field.css'), ['wp-components'], null);
-        wp_enqueue_script($this->name, $this->asset('js/field.js'), [], null, true);
+        wp_enqueue_style($this->name, $this->asset('field.css'), ['wp-components'], null);
+        wp_enqueue_script($this->name, $this->asset('field.js'), [], null, true);
+        wp_add_inline_script($this->name, $this->inlineAsset('runtime.js'));
     }
 
     /**

@@ -5,19 +5,53 @@ namespace Log1x\AcfEditorPalette\Concerns;
 trait Asset
 {
     /**
-     * Resolve an asset URI from Laravel Mix's manifest.
-     *
-     * @param  string $asset
-     * @return string
+     * The manifest.
      */
-    public function asset($asset = null)
+    public array $manifest = [];
+
+    /**
+     * Retrieve the URI of an asset.
+     */
+    public function asset(?string $asset = null): string
     {
-        if (! file_exists($manifest = $this->path . 'mix-manifest.json')) {
-            return $this->uri . $asset;
+        $asset = $this->manifest($asset);
+
+        return $this->uri . $asset;
+    }
+
+    /**
+     * Retrieve the content of an asset.
+     */
+    public function inlineAsset(string $asset): ?string
+    {
+        $path = $this->path . $this->manifest($asset);
+
+        if (! file_exists($path)) {
+            return null;
         }
 
-        $manifest = json_decode(file_get_contents($manifest), true);
+        return file_get_contents($path);
+    }
 
-        return $this->uri . ($manifest[$asset] ?? $asset);
+    /**
+     * Retrieve the manifest.
+     */
+    public function manifest($asset = null)
+    {
+        if ($this->manifest) {
+            return $asset
+                ? $this->manifest[$asset]
+                : $this->manifest;
+        }
+
+        if (! file_exists($manifest = $this->path . 'manifest.json')) {
+            return [];
+        }
+
+        $this->manifest = json_decode(file_get_contents($manifest), true);
+
+        return $asset
+            ? $this->manifest[$asset]
+            : $this->manifest;
     }
 }
