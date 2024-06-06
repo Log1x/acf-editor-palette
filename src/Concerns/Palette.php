@@ -7,7 +7,7 @@ trait Palette
     /**
      * Retrieve the editor color palette.
      *
-     * @param  string $color
+     * @param  string  $color
      * @return string[]
      */
     public function palette($color = null)
@@ -40,11 +40,11 @@ trait Palette
                 $value['slug'] => array_merge($value, [
                     'text' => sprintf('has-text-color has-%s-color', $value['slug']),
                     'background' => sprintf('has-background has-%s-background-color', $value['slug']),
-                ])
+                ]),
             ]);
         }
 
-        return ! empty($color) ? (
+        return ! empty($color) && is_string($color) ? (
             $colors[$color] ?? null
         ) : $colors;
     }
