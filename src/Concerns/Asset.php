@@ -35,7 +35,7 @@ trait Asset
 
     /**
      * Retrieve the manifest.
-     * 
+     *
      * @return array|string
      */
     public function manifest(?string $asset = null)
