@@ -35,8 +35,10 @@ trait Asset
 
     /**
      * Retrieve the manifest.
+     * 
+     * @return array|string
      */
-    public function manifest(?string $asset = null): array|string
+    public function manifest(?string $asset = null)
     {
         if ($this->manifest) {
             return $asset
