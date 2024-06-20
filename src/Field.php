@@ -16,6 +16,7 @@ class Field extends \acf_field
         'default_value' => null,
         'allowed_colors' => [],
         'exclude_colors' => [],
+        'custom_colors' => [],
         'return_format' => 'slug',
     ];
 
@@ -57,6 +58,10 @@ class Field extends \acf_field
             $palette = array_filter($palette, function ($color) use ($allowed) {
                 return in_array($color['slug'], $allowed);
             });
+        }
+
+        if (! empty($customColors = $field['custom_colors']) && is_array($customColors)) {
+            $palette = $this->sanitize_custom_colors($customColors);
         }
 
         if (empty($palette)) {
@@ -193,6 +198,36 @@ class Field extends \acf_field
         ]);
 
         acf_render_field_setting($field, [
+            'label' => __('Custom Colors', 'acf-editor-palette'),
+            'name' => 'custom_colors',
+            'instructions' => __('Add custom colors to the palette.', 'acf-editor-palette'),
+            'type' => 'repeater',
+            'button_label' => __('Add Color', 'acf-editor-palette'),
+            'sub_fields' => [
+                [
+                    'label' => __('Name', 'acf-editor-palette'),
+                    'name' => 'name',
+                    '_name' => 'name',
+                    'key' => 'name',
+                    'type' => 'text',
+                    'required' => true,
+                    'instructions' => 'The name of the color.',
+                    'wrapper' => ['width' => '', 'class' => '', 'id' => ''],
+                ],
+                [
+                    'label' => __('Color', 'acf-editor-palette'),
+                    'name' => 'color',
+                    '_name' => 'color',
+                    'key' => 'color',
+                    'type' => 'color_picker',
+                    'required' => true,
+                    'instructions' => 'The color value.',
+                    'wrapper' => ['width' => '', 'class' => '', 'id' => ''],
+                ],
+            ],
+        ]);
+
+        acf_render_field_setting($field, [
             'label' => __('Return Format', 'acf-editor-palette'),
             'name' => 'return_format',
             'instructions' => __('The format of the returned data.', 'acf-editor-palette'),
@@ -222,7 +257,7 @@ class Field extends \acf_field
         $format = $field['return_format'] ?? $this->defaults['return_format'];
 
         if (! empty($value) && is_string($value)) {
-            $value = $this->palette($value);
+            $value = $this->palette($value, $field['custom_colors']);
         }
 
         return $format === 'array' ? $value : ($value[$format] ?? $value);
@@ -243,7 +278,7 @@ class Field extends \acf_field
         if (
             $valid &&
             ! empty($value) &&
-            empty($this->palette($value))
+            empty($this->palette($value, $field['custom_colors']))
         ) {
             return __('The current color does not exist in the editor palette.', 'acf-editor-palette');
         }
@@ -267,7 +302,7 @@ class Field extends \acf_field
 
         $value = is_string($value) ? $value : $value['slug'];
 
-        return $this->palette($value);
+        return $this->palette($value, $field['custom_colors']);
     }
 
     /**
