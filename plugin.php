@@ -82,6 +82,23 @@ add_filter('after_setup_theme', new class
                 return new Field($this);
             });
         }
+
+        if (function_exists('register_graphql_acf_field_type')) {
+            add_action('wpgraphql/acf/registry_init', function () {
+                register_graphql_acf_field_type($this->name, [
+                    'graphql_type' => 'string',
+                    'resolve' => function ($root, $args, $context, $info, $field_config) {
+                        $value = $field_config->resolve_field($root, $args, $context, $info);
+
+                        if (is_null($value)) {
+                            return null;
+                        }
+
+                        return $value['slug'];
+                    },
+                ]);
+            });
+        }
     }
 
     /**
