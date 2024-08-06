@@ -22,9 +22,6 @@ class Field extends \acf_field
 
     /**
      * Create a new Field instance.
-     *
-     * @param  callable $plugin
-     * @return void
      */
     public function __construct(callable $plugin)
     {
@@ -40,13 +37,14 @@ class Field extends \acf_field
     /**
      * The rendered field type.
      *
-     * @param  array $field
+     * @param  array  $field
      * @return void
      */
     public function render_field($field)
     {
         if (empty($palette = $this->palette())) {
             echo __('The theme editor palette is empty.', 'acf-editor-palette');
+
             return;
         }
 
@@ -68,6 +66,7 @@ class Field extends \acf_field
 
         if (empty($palette)) {
             echo __('There are no colors available.', 'acf-editor-palette');
+
             return;
         }
 
@@ -128,7 +127,7 @@ class Field extends \acf_field
         echo '</ul>';
 
         echo '<div class="components-circular-option-picker__custom-clear-wrapper">' .
-            '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">' . // phpcs:ignore
+            '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">'. // phpcs:ignore
                 __('Clear', 'acf-editor-palette') .
             '</button>' .
         '</div>';
@@ -139,7 +138,7 @@ class Field extends \acf_field
     /**
      * The rendered field type settings.
      *
-     * @param  array $field
+     * @param  array  $field
      * @return void
      */
     public function render_field_settings($field)
@@ -157,18 +156,7 @@ class Field extends \acf_field
         }
 
         foreach ($palette as $item) {
-            $colors[$item['slug']] = sprintf(
-                '<span style="display: inline-block;
-                    background-color: %s;
-                    width: 1em;
-                    height: 1em;
-                    margin: 0 3px -3px;
-                    border: 1px solid #ccd0d4;
-                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);"
-                ></span> %s',
-                $item['color'],
-                $item['name']
-            );
+            $colors[$item['slug']] = $item['name'];
         }
 
         acf_render_field_setting($field, [
@@ -259,9 +247,9 @@ class Field extends \acf_field
     /**
      * The formatted field value.
      *
-     * @param  mixed $value
-     * @param  int   $post_id
-     * @param  array $field
+     * @param  mixed  $value
+     * @param  int  $post_id
+     * @param  array  $field
      * @return mixed
      */
     public function format_value($value, $post_id, $field)
@@ -280,9 +268,9 @@ class Field extends \acf_field
      * it is valid and can be saved.
      *
      * @param  bool  $valid
-     * @param  mixed $value
-     * @param  array $field
-     * @param  array $input
+     * @param  mixed  $value
+     * @param  array  $field
+     * @param  array  $input
      * @return bool
      */
     public function validate_value($valid, $value, $field, $input)
@@ -301,9 +289,9 @@ class Field extends \acf_field
     /**
      * The field value before saving to the database.
      *
-     * @param  mixed $value
-     * @param  int   $post_id
-     * @param  array $field
+     * @param  mixed  $value
+     * @param  int  $post_id
+     * @param  array  $field
      * @return mixed
      */
     public function update_value($value, $post_id, $field)
@@ -324,8 +312,9 @@ class Field extends \acf_field
      */
     public function input_admin_enqueue_scripts()
     {
-        wp_enqueue_style($this->name, $this->asset('css/field.css'), ['wp-components'], null);
-        wp_enqueue_script($this->name, $this->asset('js/field.js'), [], null, true);
+        wp_enqueue_style($this->name, $this->asset('field.css'), ['wp-components'], null);
+        wp_enqueue_script($this->name, $this->asset('field.js'), [], null, true);
+        wp_add_inline_script($this->name, $this->inlineAsset('runtime.js'));
     }
 
     /**
