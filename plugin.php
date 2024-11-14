@@ -4,7 +4,7 @@
  * Plugin Name: Advanced Custom Fields: Editor Palette Field
  * Plugin URI:  https://github.com/log1x/acf-editor-palette
  * Description: A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
- * Version:     1.1.9
+ * Version:     1.2.0
  * Author:      Brandon Nifong
  * Author URI:  https://github.com/log1x
  */
@@ -84,17 +84,52 @@ add_filter('after_setup_theme', new class
         }
 
         if (function_exists('register_graphql_acf_field_type')) {
+            // Register the EditorPaletteColor type
+            add_action('graphql_register_types', function () {
+                register_graphql_object_type('EditorPaletteColor', [
+                    'description' => __('Editor Palette Color Object', 'acf-editor-palette'),
+                    'fields' => [
+                        'color' => [
+                            'type' => 'String',
+                            'description' => __('The color value', 'acf-editor-palette'),
+                        ],
+                        'name' => [
+                            'type' => 'String',
+                            'description' => __('The color name', 'acf-editor-palette'),
+                        ],
+                        'slug' => [
+                            'type' => 'String',
+                            'description' => __('The color slug', 'acf-editor-palette'),
+                        ],
+                        'text' => [
+                            'type' => 'String',
+                            'description' => __('The text color class', 'acf-editor-palette'),
+                        ],
+                        'background' => [
+                            'type' => 'String',
+                            'description' => __('The background color class', 'acf-editor-palette'),
+                        ],
+                    ],
+                ]);
+            });
+
+            // Register the ACF field type
             add_action('wpgraphql/acf/registry_init', function () {
                 register_graphql_acf_field_type($this->name, [
-                    'graphql_type' => 'string',
+                    'graphql_type' => 'EditorPaletteColor',
                     'resolve' => function ($root, $args, $context, $info, $field_config) {
-                        $value = $field_config->resolve_field($root, $args, $context, $info);
+                        $post_id = isset($root['node']) && isset($root['node']->ID) ? $root['node']->ID : null;
 
-                        if (is_null($value)) {
+                        if (!$post_id) {
                             return null;
                         }
 
-                        return $value['slug'];
+                        // Convert camelCase to snake_case
+                        $field_name = $info->fieldName ?? null;
+                        $acf_field_name = preg_replace('/[A-Z]/', '_$0', $field_name);
+                        $acf_field_name = strtolower($acf_field_name);
+
+                        return get_field($acf_field_name, $post_id);
                     },
                 ]);
             });
