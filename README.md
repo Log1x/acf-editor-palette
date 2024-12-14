@@ -1,4 +1,4 @@
-# ACF Editor Palette
+# ACF Editor Palette Fork (https://github.com/Log1x/acf-editor-palette)
 
 ![Latest Stable Version](https://img.shields.io/packagist/v/log1x/acf-editor-palette?style=flat-square)
 ![Total Downloads](https://img.shields.io/packagist/dt/log1x/acf-editor-palette?style=flat-square)
@@ -63,7 +63,7 @@ $field
 
 ## Bug Reports
 
-If you discover a bug in ACF Editor Palette, please [open an issue](https://github.com/log1x/acf-editor-palette/issues).
+If you discover a bug in ACF Editor Palette, please [open an issue](https://github.com/OfficialAudite/acf-editor-palette/issues).
 
 ## Contributing
 
