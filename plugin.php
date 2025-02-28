@@ -4,7 +4,7 @@
  * Plugin Name: Advanced Custom Fields: Editor Palette Field
  * Plugin URI:  https://github.com/log1x/acf-editor-palette
  * Description: A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
- * Version:     1.2.0
+ * Version:     1.2.1
  * Author:      Brandon Nifong
  * Author URI:  https://github.com/log1x
  */
@@ -59,15 +59,14 @@ add_filter('after_setup_theme', new class
             return;
         }
 
-        $this->uri = plugin_dir_url(__FILE__) . $this->path;
-        $this->path = plugin_dir_path(__FILE__) . $this->path;
+        $this->uri = plugin_dir_url(__FILE__).$this->path;
+        $this->path = plugin_dir_path(__FILE__).$this->path;
 
-        if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
+        if (file_exists($composer = __DIR__.'/vendor/autoload.php')) {
             require_once $composer;
         }
 
         $this->register();
-        $this->registerAdminColumns();
     }
 
     /**
@@ -84,56 +83,62 @@ add_filter('after_setup_theme', new class
         }
 
         if (function_exists('register_graphql_acf_field_type')) {
-            add_action('wpgraphql/acf/registry_init', function () {
-                register_graphql_acf_field_type($this->name, [
-                    'graphql_type' => 'string',
-                    'resolve' => function ($root, $args, $context, $info, $field_config) {
-                        $value = $field_config->resolve_field($root, $args, $context, $info);
-
-                        if (is_null($value)) {
-                            return null;
-                        }
-
-                        return $value['slug'];
-                    },
-                ]);
-            });
+            $this->registerGraphQl();
         }
     }
 
     /**
-     * Register the field type with ACP.
+     * Register the field type with WPGraphQL.
      *
      * @return void
      */
-    protected function registerAdminColumns()
+    protected function registerGraphQl()
     {
-        if (! defined('ACP_FILE')) {
-            return;
-        }
+        add_action('graphql_register_types', function () {
+            register_graphql_object_type('EditorPaletteColor', [
+                'description' => __('Editor Palette Color Object', 'acf-editor-palette'),
+                'fields' => [
+                    'color' => [
+                        'type' => 'String',
+                        'description' => __('The color value', 'acf-editor-palette'),
+                    ],
+                    'name' => [
+                        'type' => 'String',
+                        'description' => __('The color name', 'acf-editor-palette'),
+                    ],
+                    'slug' => [
+                        'type' => 'String',
+                        'description' => __('The color slug', 'acf-editor-palette'),
+                    ],
+                    'text' => [
+                        'type' => 'String',
+                        'description' => __('The text color class', 'acf-editor-palette'),
+                    ],
+                    'background' => [
+                        'type' => 'String',
+                        'description' => __('The background color class', 'acf-editor-palette'),
+                    ],
+                ],
+            ]);
+        });
 
-        add_filter('ac/column/value', function ($value, $id, $column) {
-            if (
-                ! is_a($column, '\ACA\ACF\Column') ||
-                $column->get_field_type() !== $this->name ||
-                empty($color = get_field($column->get_meta_key())) ||
-                ! is_array($color)
-            ) {
-                return $value;
-            }
+        add_action('wpgraphql/acf/registry_init', function () {
+            register_graphql_acf_field_type($this->name, [
+                'graphql_type' => 'EditorPaletteColor',
+                'resolve' => function ($root, $args, $context, $info, $field_config) {
+                    $id = isset($root['node']) && isset($root['node']->ID) ? $root['node']->ID : null;
+                    $field = $info->fieldName ?? null;
 
-            return sprintf(
-                '<div
-                    aria-label="%s"
-                    style="background-color: %s;
-                          width: 24px;
-                          height: 24px;
-                          border: 1px solid #ccd0d4;
-                          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);"
-                ></div>',
-                $color['name'],
-                $color['color']
-            );
-        }, 10, 3);
+                    if (! $id || ! $field) {
+                        return null;
+                    }
+
+                    $field = preg_replace('/[A-Z]/', '_$0', $field);
+                    $field = strtolower($field);
+
+                    return get_field($field, $id);
+                },
+            ]);
+        });
     }
 });
