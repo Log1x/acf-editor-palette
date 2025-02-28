@@ -65,6 +65,10 @@
       }
 
       $(this)
+        .find('.acf-label label .component-color-indicator')
+        .remove()
+
+      $(this)
         .find('.acf-label label')
         .append(
           `<span class="component-color-indicator" style="display: none;"></span>`
