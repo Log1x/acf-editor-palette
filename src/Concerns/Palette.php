@@ -10,7 +10,7 @@ trait Palette
      * @param  string  $color
      * @return string[]
      */
-    public function palette($color = null)
+    public function palette($color = null, $custom_colors = [])
     {
         $colors = [];
         $themeJson = [];
@@ -31,6 +31,10 @@ trait Palette
             return $color ?: $colors;
         }
 
+        if (! empty($custom_colors)) {
+            $palette = $this->sanitize_custom_colors($custom_colors);
+        }
+
         foreach ($palette as $value) {
             if (empty($value['slug'])) {
                 continue;
@@ -47,5 +51,20 @@ trait Palette
         return ! empty($color) && is_string($color) && is_array($colors) ? (
             array_key_exists($color, $colors) ? $colors[$color] : null
         ) : $colors;
+    }
+
+    public function sanitize_custom_colors($customColors = [])
+    {
+        if (! is_array($customColors)) {
+            return [];
+        }
+
+        return array_map(function ($color) {
+            if (empty($color['slug'])) {
+                $color['slug'] = sanitize_title($color['name']);
+            }
+
+            return $color;
+        }, $customColors);
     }
 }
