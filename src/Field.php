@@ -20,6 +20,20 @@ class Field extends \acf_field
     ];
 
     /**
+     * Holds the URI to the plugin.
+     *
+     * @var string
+     */
+    protected string $uri = '';
+
+    /**
+     * Holds the path to the plugin.
+     *
+     * @var string
+     */
+    protected string $path = '';
+
+    /**
      * Create a new Field instance.
      */
     public function __construct(callable $plugin)
