@@ -21,15 +21,11 @@ class Field extends \acf_field
 
     /**
      * Holds the URI to the plugin.
-     *
-     * @var string
      */
     protected string $uri = '';
 
     /**
      * Holds the path to the plugin.
-     *
-     * @var string
      */
     protected string $path = '';
 
