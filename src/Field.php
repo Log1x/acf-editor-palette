@@ -16,6 +16,7 @@ class Field extends \acf_field
         'default_value' => null,
         'allowed_colors' => [],
         'exclude_colors' => [],
+        'include_gradients' => false,
         'return_format' => 'slug',
     ];
 
@@ -51,7 +52,7 @@ class Field extends \acf_field
      */
     public function render_field($field)
     {
-        if (empty($palette = $this->palette())) {
+        if (empty($palette = $this->palette(null, ! empty($field['include_gradients'])))) {
             echo __('The theme editor palette is empty.', 'acf-editor-palette');
 
             return;
@@ -108,22 +109,28 @@ class Field extends \acf_field
                 checked($color['slug'], $active, false)
             );
 
+            $isGradient = ! empty($color['gradient']);
+            $swatchStyle = $isGradient
+                ? sprintf('background: %s; box-shadow: none;', $color['gradient'])
+                : sprintf('background-color: %1$s; color: %1$s;', $color['color']);
+
             echo sprintf(
                 '<label
                     for="%s-%s"
                     aria-label="Color: %s"
                     title="%s"
                     class="components-button components-circular-option-picker__option acf-js-tooltip"
-                    style="background-color: %s; color: %s;"
-                    data-color="%s",
+                    style="%s"
+                    data-color="%s"
+                    data-gradient="%s"
                 ></label>',
                 $field['id'],
                 $color['slug'],
                 $color['name'],
                 $color['name'],
-                $color['color'],
-                $color['color'],
-                $color['color']
+                $swatchStyle,
+                $isGradient ? '' : $color['color'],
+                $isGradient ? $color['gradient'] : ''
             );
 
             echo '</li>';
@@ -133,9 +140,9 @@ class Field extends \acf_field
 
         echo '<div class="components-circular-option-picker__custom-clear-wrapper">'.
             '<button type="button" class="components-button components-circular-option-picker__clear is-secondary is-small">'. // phpcs:ignore
-                __('Clear', 'acf-editor-palette').
+            __('Clear', 'acf-editor-palette').
             '</button>'.
-        '</div>';
+            '</div>';
 
         echo '</div>';
     }
@@ -150,7 +157,7 @@ class Field extends \acf_field
     {
         $colors = [];
 
-        if (empty($palette = $this->palette())) {
+        if (empty($palette = $this->palette(null, ! empty($field['include_gradients'])))) {
             return acf_render_field_setting($field, [
                 'label' => __('No color palette found.', 'acf-editor-palette'),
                 'name' => 'color_palette_empty',
@@ -203,6 +210,15 @@ class Field extends \acf_field
         ]);
 
         acf_render_field_setting($field, [
+            'label' => __('Include Gradients', 'acf-editor-palette'),
+            'name' => 'include_gradients',
+            'instructions' => __('Include gradients from the theme palette.', 'acf-editor-palette'),
+            'type' => 'true_false',
+            'ui' => 1,
+            'default_value' => 0,
+        ]);
+
+        acf_render_field_setting($field, [
             'label' => __('Return Format', 'acf-editor-palette'),
             'name' => 'return_format',
             'instructions' => __('The format of the returned data.', 'acf-editor-palette'),
@@ -232,7 +248,7 @@ class Field extends \acf_field
         $format = $field['return_format'] ?? $this->defaults['return_format'];
 
         if (! empty($value) && is_string($value)) {
-            $value = $this->palette($value);
+            $value = $this->palette($value, ! empty($field['include_gradients']));
         }
 
         return $format === 'array' ? $value : ($value[$format] ?? $value);
@@ -253,7 +269,7 @@ class Field extends \acf_field
         if (
             $valid &&
             ! empty($value) &&
-            empty($this->palette($value))
+            empty($this->palette($value, ! empty($field['include_gradients'])))
         ) {
             return __('The current color does not exist in the editor palette.', 'acf-editor-palette');
         }
@@ -277,7 +293,7 @@ class Field extends \acf_field
 
         $value = is_string($value) ? $value : $value['slug'];
 
-        return $this->palette($value);
+        return $this->palette($value, ! empty($field['include_gradients']));
     }
 
     /**

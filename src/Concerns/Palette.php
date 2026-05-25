@@ -8,9 +8,10 @@ trait Palette
      * Retrieve the editor color palette.
      *
      * @param  string  $color
+     * @param  bool  $includeGradients
      * @return string[]
      */
-    public function palette($color = null)
+    public function palette($color = null, $includeGradients = false)
     {
         $colors = [];
         $themeJson = [];
@@ -27,10 +28,6 @@ trait Palette
             $palette = array_merge($palette, $themeJson);
         }
 
-        if (empty($palette)) {
-            return $color ?: $colors;
-        }
-
         foreach ($palette as $value) {
             if (empty($value['slug'])) {
                 continue;
@@ -44,8 +41,54 @@ trait Palette
             ]);
         }
 
+        if ($includeGradients) {
+            foreach ($this->gradients() as $slug => $value) {
+                $colors[$slug] = $value;
+            }
+        }
+
+        if (empty($colors)) {
+            return $color ?: $colors;
+        }
+
         return ! empty($color) && is_string($color) && is_array($colors) ? (
-            array_key_exists($color, $colors) ? $colors[$color] : null
+        array_key_exists($color, $colors) ? $colors[$color] : null
         ) : $colors;
+    }
+
+    /**
+     * Retrieve the editor gradient palette.
+     *
+     * @return string[]
+     */
+    public function gradients()
+    {
+        $gradients = [];
+        $themeJson = [];
+
+        $palette = (array) current(
+            get_theme_support('editor-gradient-presets') ?: []
+        );
+
+        if (function_exists('wp_get_global_settings')) {
+            $themeJson = wp_get_global_settings(['color', 'gradients', 'theme']);
+        }
+
+        if (is_array($themeJson)) {
+            $palette = array_merge($palette, $themeJson);
+        }
+
+        foreach ($palette as $value) {
+            if (empty($value['slug'])) {
+                continue;
+            }
+
+            $gradients[$value['slug']] = array_merge($value, [
+                'text' => '',
+                'background' => sprintf('has-background has-%s-gradient-background', $value['slug']),
+            ]);
+        }
+
+        return $gradients;
     }
 }
