@@ -14,6 +14,7 @@ A Gutenberg-like editor palette color picker field for Advanced Custom Fields.
 - Return format includes the default [palette keys](https://developer.wordpress.org/block-editor/developers/themes/theme-support/) as well as background and text color classes for convenience.
 - Default value can optionally be set using the color's slug.
 - Colors can optionally be allowed/excluded from the palette.
+- The theme palette can optionally be replaced with custom colors per field.
 
 ## Requirements
 
@@ -60,6 +61,27 @@ $field
     ->setConfig('exclude_colors', ['green-50', 'green-100'])
     ->setConfig('return_format', 'slug');
 ```
+
+### Custom Colors
+
+The theme palette can be replaced with custom colors on a per-field basis using the Custom Colors setting.
+
+When registering fields in PHP, pass the colors using the same shape as `theme.json`. The slug is optional and generated from the name when omitted:
+
+```php
+$field
+  ->addField('accent_color', 'editor_palette')
+    ->setConfig('custom_colors', [
+        ['name' => 'Coral', 'slug' => 'coral', 'color' => '#F26B5B'],
+        ['name' => 'Sunflower', 'slug' => 'sunflower', 'color' => '#F5B83D'],
+        ['name' => 'Teal', 'slug' => 'teal', 'color' => '#2BB5A0'],
+        ['name' => 'Indigo', 'color' => '#5B5FC7'], // slug generated as "indigo"
+    ]);
+```
+
+Colors must be hex (`#f26b5b`, including 3, 4 and 8 digit forms), `rgb()`/`rgba()` or `hsl()`/`hsla()`. Other values are dropped.
+
+The `text` and `background` classes are still returned for custom colors, but your theme will need to provide the matching CSS.
 
 ## Bug Reports
 

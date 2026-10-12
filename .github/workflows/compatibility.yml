@@ -39,3 +39,6 @@ jobs:
 
       - name: Run Pint
         run: vendor/bin/pint --test
+
+      - name: Run Pest
+        run: vendor/bin/pest

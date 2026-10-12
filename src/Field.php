@@ -16,6 +16,7 @@ class Field extends \acf_field
         'default_value' => null,
         'allowed_colors' => [],
         'exclude_colors' => [],
+        'custom_colors' => [],
         'return_format' => 'slug',
     ];
 
@@ -51,7 +52,7 @@ class Field extends \acf_field
      */
     public function render_field($field)
     {
-        if (empty($palette = $this->palette())) {
+        if (empty($palette = $this->palette(null, $field['custom_colors'] ?? []))) {
             echo __('The theme editor palette is empty.', 'acf-editor-palette');
 
             return;
@@ -77,52 +78,48 @@ class Field extends \acf_field
 
         $active = is_array($field['value']) ? $field['value']['slug'] : $field['value'];
 
-        echo sprintf(
-            '<input type="hidden" id="%s" name="%s" value="">',
-            $field['id'],
-            $field['name']
-        );
+        $id = esc_attr($field['id']);
+        $name = esc_attr($field['name']);
 
-        echo sprintf('<div class="%s components-circular-option-picker">', $field['class']);
+        echo sprintf('<input type="hidden" id="%s" name="%s" value="">', $id, $name);
+
+        echo sprintf('<div class="%s components-circular-option-picker">', esc_attr($field['class']));
 
         echo '<ul class="components-circular-option-picker__swatches">';
 
         echo sprintf(
-            '<input class="empty-value" type="radio" id="%s-%s" name="%s" value="%s" %s>',
-            $field['id'],
-            'empty',
-            $field['name'],
-            null,
+            '<input class="empty-value" type="radio" id="%s-empty" name="%s" value="" %s>',
+            $id,
+            $name,
             checked(null, $active, false)
         );
 
         foreach ($palette as $color) {
+            $checked = checked($color['slug'], $active, false);
+            $color = array_map('esc_attr', $color);
+
             echo '<li class="components-circular-option-picker__option-wrapper">';
 
             echo sprintf(
-                '<input type="radio" id="%s-%s" name="%s" value="%s" %s>',
-                $field['id'],
+                '<input type="radio" id="%1$s-%2$s" name="%3$s" value="%2$s" %4$s>',
+                $id,
                 $color['slug'],
-                $field['name'],
-                $color['slug'],
-                checked($color['slug'], $active, false)
+                $name,
+                $checked
             );
 
             echo sprintf(
                 '<label
-                    for="%s-%s"
-                    aria-label="Color: %s"
-                    title="%s"
+                    for="%1$s-%2$s"
+                    aria-label="Color: %3$s"
+                    title="%3$s"
                     class="components-button components-circular-option-picker__option acf-js-tooltip"
-                    style="background-color: %s; color: %s;"
-                    data-color="%s",
+                    style="background-color: %4$s; color: %4$s;"
+                    data-color="%4$s"
                 ></label>',
-                $field['id'],
+                $id,
                 $color['slug'],
                 $color['name'],
-                $color['name'],
-                $color['color'],
-                $color['color'],
                 $color['color']
             );
 
@@ -150,7 +147,41 @@ class Field extends \acf_field
     {
         $colors = [];
 
-        if (empty($palette = $this->palette())) {
+        acf_render_field_setting($field, [
+            'label' => __('Custom Colors', 'acf-editor-palette'),
+            'name' => 'custom_colors',
+            'instructions' => __('Replace the theme palette with custom colors. Slugs are generated from the name when left empty.', 'acf-editor-palette'),
+            'type' => 'repeater',
+            'layout' => 'table',
+            'button_label' => __('Add Color', 'acf-editor-palette'),
+            // Keys match names so rows load and save in the same shape as theme.json colors.
+            'sub_fields' => array_map('acf_get_valid_field', [
+                [
+                    'label' => __('Name', 'acf-editor-palette'),
+                    'name' => 'name',
+                    'key' => 'name',
+                    'type' => 'text',
+                    'wrapper' => ['width' => 40],
+                ],
+                [
+                    'label' => __('Slug', 'acf-editor-palette'),
+                    'name' => 'slug',
+                    'key' => 'slug',
+                    'type' => 'text',
+                    'wrapper' => ['width' => 30],
+                    'placeholder' => __('Optional', 'acf-editor-palette'),
+                ],
+                [
+                    'label' => __('Color', 'acf-editor-palette'),
+                    'name' => 'color',
+                    'key' => 'color',
+                    'type' => 'color_picker',
+                    'wrapper' => ['width' => 30],
+                ],
+            ]),
+        ]);
+
+        if (empty($palette = $this->palette(null, $field['custom_colors'] ?? []))) {
             return acf_render_field_setting($field, [
                 'label' => __('No color palette found.', 'acf-editor-palette'),
                 'name' => 'color_palette_empty',
@@ -169,10 +200,9 @@ class Field extends \acf_field
             'name' => 'default_value',
             'instructions' => __('The default color value.', 'acf-editor-palette'),
             'type' => 'select',
-            'ui' => '1',
             'default_value' => null,
             'allow_null' => true,
-            'placeholder' => __('Select a default color (optional)', 'acf-editor-palette'),
+            'placeholder' => __('None', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 
@@ -185,7 +215,7 @@ class Field extends \acf_field
             'default_value' => null,
             'allow_null' => true,
             'multiple' => true,
-            'placeholder' => __('Select allowed colors (optional)', 'acf-editor-palette'),
+            'placeholder' => __('All colors', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 
@@ -198,7 +228,7 @@ class Field extends \acf_field
             'default_value' => null,
             'allow_null' => true,
             'multiple' => true,
-            'placeholder' => __('Select excluded colors (optional)', 'acf-editor-palette'),
+            'placeholder' => __('None', 'acf-editor-palette'),
             'choices' => $colors,
         ]);
 
@@ -207,7 +237,6 @@ class Field extends \acf_field
             'name' => 'return_format',
             'instructions' => __('The format of the returned data.', 'acf-editor-palette'),
             'type' => 'select',
-            'ui' => '1',
             'choices' => [
                 'name' => 'Name',
                 'slug' => 'Slug',
@@ -232,7 +261,9 @@ class Field extends \acf_field
         $format = $field['return_format'] ?? $this->defaults['return_format'];
 
         if (! empty($value) && is_string($value)) {
-            $value = $this->palette($value);
+            $value = $this->palette($value, $field['custom_colors'] ?? []);
+        } elseif (! empty($value['slug']) && is_array($color = $this->palette($value['slug'], $field['custom_colors'] ?? []))) {
+            $value = $color;
         }
 
         return $format === 'array' ? $value : ($value[$format] ?? $value);
@@ -253,7 +284,7 @@ class Field extends \acf_field
         if (
             $valid &&
             ! empty($value) &&
-            empty($this->palette($value))
+            empty($this->palette($value, $field['custom_colors'] ?? []))
         ) {
             return __('The current color does not exist in the editor palette.', 'acf-editor-palette');
         }
@@ -277,7 +308,34 @@ class Field extends \acf_field
 
         $value = is_string($value) ? $value : $value['slug'];
 
-        return $this->palette($value);
+        return $this->palette($value, $field['custom_colors'] ?? []);
+    }
+
+    /**
+     * The field settings before saving to the database.
+     *
+     * @param  array  $field
+     * @return array
+     */
+    public function update_field($field)
+    {
+        $field['custom_colors'] = $this->customPalette($field['custom_colors'] ?? []);
+
+        if (empty($colors = $this->palette(null, $field['custom_colors']))) {
+            return $field;
+        }
+
+        foreach (['allowed_colors', 'exclude_colors'] as $key) {
+            if (! empty($field[$key]) && is_array($field[$key])) {
+                $field[$key] = array_values(array_intersect($field[$key], array_keys($colors)));
+            }
+        }
+
+        if (! empty($field['default_value']) && is_string($field['default_value']) && ! isset($colors[$field['default_value']])) {
+            $field['default_value'] = null;
+        }
+
+        return $field;
     }
 
     /**

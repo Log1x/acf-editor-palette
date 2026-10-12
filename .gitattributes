@@ -1,6 +1,7 @@
 /.gitattributes export-ignore
 /.github export-ignore
 /assets export-ignore
+/tests export-ignore
 .editorconfig export-ignore
 .gitignore export-ignore
 .prettierrc export-ignore
@@ -8,6 +9,7 @@ bud.config.ts export-ignore
 composer.lock export-ignore
 LICENSE.md export-ignore
 package.json export-ignore
+phpunit.xml export-ignore
 README.md export-ignore
 tailwind.config.js export-ignore
 yarn.lock export-ignore
