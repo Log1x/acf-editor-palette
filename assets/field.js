@@ -77,8 +77,8 @@
       .on('click', () => onClear())
 
     $field
-      .find('.acf-input li')
-      .on('click', () => onChange())
+      .find('.acf-input li input')
+      .on('change', () => onChange())
 
     onChange()
   }
